@@ -8,18 +8,20 @@ using namespace std;
 
 int main()
 {
-    vector<int> tape(10, 0);
+    vector<int> tape(100, 0);
     char state = 'A';
-    int head = 5;
+    int head = 50;
+    int sum = 0;
 
-    for (int i = 0; i < (int)tape.size(); i++) {
+    for (int i = 0; i < (int)tape.size(); i++)
+    {
         cout << tape[i];
     }
     cout << endl;
 
     while (true)
     {
-        int symbol = 0;
+        int symbol = tape[head];
         if (state == 'A')
         {
             if (symbol == 0)
@@ -28,17 +30,14 @@ int main()
                 head += 1;
                 state = 'B';
             }
-        }
-        if (state == 'A')
-        {
-            if (symbol == 1)
+            else if (symbol == 1)
             {
                 tape[head] = 1;
                 head -= 1;
                 state = 'B';
             }
         }
-        if (state == 'B')
+        else if (state == 'B')
         {
             if (symbol == 0)
             {
@@ -46,23 +45,38 @@ int main()
                 head -= 1;
                 state = 'A';
             }
-        }
-        if (state == 'B')
-        {
-            if (symbol == 1)
+            else if (symbol == 1)
             {
                 tape[head] = 1;
                 head += 1;
                 state = 'H';
-                break;
             }
         }
-        for (int i = 0; i < (int)tape.size(); i++) {
-            cout << tape[i];
+
+        // Display the tape
+        for (int i = 0; i < (int)tape.size(); i++)
+        {
+            if (i == head)
+                cout << "[" << tape[i] << "]";
+            else
+                cout << " " << tape[i] << " ";
         }
-        cout << endl;
-        std::this_thread::sleep_for(2000ms);
+        cout << "\nHead at: " << head << ", State: " << state << endl;
+
+        if (state == 'H')
+            break;
+        this_thread::sleep_for(1000ms);
     }
+
+    for (int i = 0; i < (int)tape.size(); i++)
+    {
+        if (tape[i] == 1)
+        {
+            sum++;
+        }
+    }
+
+    cout << "Total numer of 1s: " << sum << endl;
 
     return 0;
 }
